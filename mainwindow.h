@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -17,8 +18,9 @@ public:
 
 private slots:
     void on_startTest_clicked();
-
+    void set();
 private:
     Ui::MainWindow *ui;
+
 };
 #endif // MAINWINDOW_H

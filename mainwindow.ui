@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>60</y>
+      <x>370</x>
+      <y>270</y>
       <width>80</width>
       <height>21</height>
      </rect>
@@ -30,10 +30,10 @@
    <widget class="QPushButton" name="startTest">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>20</y>
-      <width>121</width>
-      <height>61</height>
+      <x>280</x>
+      <y>270</y>
+      <width>81</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
@@ -43,14 +43,66 @@
    <widget class="QLabel" name="result">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>170</y>
+      <x>10</x>
+      <y>200</y>
       <width>141</width>
-      <height>31</height>
+      <height>81</height>
      </rect>
     </property>
     <property name="text">
      <string>Result</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>151</width>
+      <height>94</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="result_3">
+       <property name="text">
+        <string>Goods</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="result_2">
+       <property name="text">
+        <string>Materials</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_2"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>10</y>
+      <width>281</width>
+      <height>111</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>140</y>
+      <width>281</width>
+      <height>111</height>
+     </rect>
     </property>
    </widget>
   </widget>
@@ -60,7 +112,7 @@
      <x>0</x>
      <y>0</y>
      <width>455</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

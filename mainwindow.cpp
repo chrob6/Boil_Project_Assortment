@@ -10,7 +10,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->startTest->setText("Test");
     ui->pushButton->setText("Close");
 
-
 }
 
 MainWindow::~MainWindow()
@@ -18,14 +17,19 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::set(){ //po ustwieniu spinBox_2?
+    int goods = ui->spinBox->value();
+    int material = ui->spinBox_2->value();
+    ui->tableWidget->setRowCount(material); //tabela 1 do wczytania nakładów jednostkowych
+    ui->tableWidget->setColumnCount(goods);
+}
 
 void MainWindow::on_startTest_clicked()
 {
     //Narazie bardzo dummy rozwiazanie ale dziala rozwiazanie z zajęć i póki co bez wczytywania z UI
-    int goods = 2; // Zad 1 i 2
+    int goods = ui->spinBox->value(); // Zad 1 i 2
     //int goods = 4; // Zad 2.
-    int material = 2;
-
+    int material = ui->spinBox_2->value();
     int* limit_goods = new int[goods];
     int* limit_goods_unit = new int[goods];
     float **main_table = new float *[goods];
@@ -36,10 +40,10 @@ void MainWindow::on_startTest_clicked()
 
 
     //Zad1
-    main_table[0][0] = 16;
-    main_table[0][1] = 24;
-    main_table[1][0] = 16;
-    main_table[1][1] = 10;
+    main_table[0][0] = 16;//ui->tableWidget->item(0,0)->text().toFloat();
+    main_table[0][1] = 24;//ui->tableWidget->item(0,1)->text().toFloat();
+    main_table[1][0] = 16;//ui->tableWidget->item(1,0)->text().toFloat();
+    main_table[1][1] = 10;//ui->tableWidget->item(1,1)->text().toFloat();
     limit_goods_unit[0] = 3000;
     limit_goods_unit[1] = 4000;
     limit_goods[0] = 96000;
