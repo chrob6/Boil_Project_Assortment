@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "Simplex.cpp"
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -37,10 +38,77 @@ void MainWindow::on_startTest_clicked()
         main_table[i] = new float [material];
     }
 
+    /*How to give inputs to the program =>>>
+
+       Example:
+        colSizeA = 6 // input colmn size
+        rowSizeA = 3  // input row size
+
+        float C[N]={-6,-5,-4,0,0,0};  //Initialize the C array  with the coefficients of the constraints of the objective function
+        float B[M]={240,360,300};//Initialize the B array constants of the constraints respectively
+
+
+       //initialize the A array by giving all the coefficients of all the variables
+       float A[M][N] =  {
+                     { 2,  1,  1,   1,  0, 0},
+                    { 1,  3,  2,   0,  1, 0 },
+                    {   2,    1,  2,   0,  0,  1}
+                    };
+
+    */
+
+    //zad1
+    int colSizeA = material+5; //materialy +liczba warunkow? ale zalezy czy <= czy = czy >=
+    int rowSizeA = 5; //liczba warunkow
+    float C[]= {-1800,-2400,-3000,0,0,0,0,0};  //should initialis the c arry here
+    float B[]={36000,48000,200,120,60};  // should initialis the b array here
+
+
+
+    float a[5][8] = {    //should intialis the A[][] array here
+                   { 5,  3,  1, 1, 0, 0,0,0},
+                   { 1,  2,  4, 0, 1, 0,0,0},
+                   { 1,  0,  0, 0, 0, 1,0,0},
+                   { 0,  1,  0, 0, 0, 0,1,0},
+                   { 0,  0,  1, 0, 0, 0,0,1}
+             };
+
+
+        std::vector <std::vector<float> > vec2D(rowSizeA, std::vector<float>(colSizeA, 0));
+
+        std::vector<float> b(rowSizeA,0);
+        std::vector<float> c(colSizeA,0);
+
+
+
+
+       for(int i=0;i<rowSizeA;i++){         //make a vector from given array
+            for(int j=0; j<colSizeA;j++){
+                vec2D[i][j] = a[i][j];
+            }
+       }
+
+
+
+
+
+       for(int i=0;i<rowSizeA;i++){
+            b[i] = B[i];
+       }
+
+        for(int i=0;i<colSizeA;i++){
+            c[i] = C[i];
+       }
+
+
+      // hear the make the class parameters with A[m][n] vector b[] vector and c[] vector
+      Simplex simplex(vec2D,b,c);
+      simplex.CalculateSimplex();
+
 
 
     //Zad1
-    main_table[0][0] = 16;//ui->tableWidget->item(0,0)->text().toFloat();
+    /*main_table[0][0] = 16;//ui->tableWidget->item(0,0)->text().toFloat();
     main_table[0][1] = 24;//ui->tableWidget->item(0,1)->text().toFloat();
     main_table[1][0] = 16;//ui->tableWidget->item(1,0)->text().toFloat();
     main_table[1][1] = 10;//ui->tableWidget->item(1,1)->text().toFloat();
@@ -121,10 +189,10 @@ void MainWindow::on_startTest_clicked()
         }
     }
 
-
+*/
 
     //float res = 170000;
-    QString disp_res = QString::number(result);
+    /*QString disp_res = QString::number(result);
     ui->result->setText(disp_res);
     qInfo() <<  x1;
     qInfo() <<  x2;
@@ -133,6 +201,6 @@ void MainWindow::on_startTest_clicked()
     delete[] limit_goods;
     delete [] limit_goods_unit;
     for ( int i(0); i < goods; ++i )  delete [] main_table[i];
-    delete [] main_table;
+    delete [] main_table;*/
 }
 
