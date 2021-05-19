@@ -19,6 +19,10 @@ public:
 private slots:
     void on_startTest_clicked();
     void set();
+    void on_get_variables_clicked();
+
+    void on_add_limit_clicked();
+
 private:
     Ui::MainWindow *ui;
 

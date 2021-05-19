@@ -101,9 +101,9 @@ class Simplex{
 
             float pivetValue = A[pivotRow][pivotColumn];//gets the pivot value
 
-            float pivotRowVals[cols];//the column with the pivot
+            float *pivotRowVals = new float[cols];//the column with the pivot
 
-            float pivotColVals[rows];//the row with the pivot
+            float *pivotColVals = new float[rows];//the row with the pivot
 
             float rowNew[cols];//the row after processing the pivot value
 
@@ -197,7 +197,7 @@ class Simplex{
 
         //find the row with the pivot value.The least value item's row in the B array
         int findPivotRow(int pivotColumn){
-            float positiveValues[rows];
+            float *positiveValues = new float[rows];
             std::vector<float> result(rows,0);
             //float result[rows];
             int negativeValueCount = 0;
@@ -230,7 +230,7 @@ class Simplex{
             //find the minimum's location of the smallest item of the B array
             float minimum = 99999999;
             int location = 0;
-            for(int i=0;i<sizeof(result)/sizeof(result[0]);i++){
+            for(int i=0;i<3;i++){ // xd
                 if(result[i]>0){
                     if(result[i]<minimum){
                         minimum = result[i];

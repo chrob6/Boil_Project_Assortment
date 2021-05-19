@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>455</width>
-    <height>381</height>
+    <width>1204</width>
+    <height>656</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>270</y>
+      <x>130</x>
+      <y>360</y>
       <width>80</width>
       <height>21</height>
      </rect>
@@ -30,27 +30,14 @@
    <widget class="QPushButton" name="startTest">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>270</y>
+      <x>130</x>
+      <y>330</y>
       <width>81</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
      <string>Test</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="result">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>200</y>
-      <width>141</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Result</string>
     </property>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
@@ -85,24 +72,73 @@
      </item>
     </layout>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableWidget" name="table_limits">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>10</y>
-      <width>281</width>
-      <height>111</height>
+      <x>320</x>
+      <y>200</y>
+      <width>551</width>
+      <height>201</height>
      </rect>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget_2">
+   <widget class="QSpinBox" name="spinBox_3">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>140</y>
-      <width>281</width>
-      <height>111</height>
+      <x>0</x>
+      <y>120</y>
+      <width>149</width>
+      <height>23</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="result_4">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>100</y>
+      <width>149</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Variables</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="table_max_function">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>90</y>
+      <width>351</width>
+      <height>71</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="get_variables">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>120</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Insert Variables</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="add_limit">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>260</y>
+      <width>80</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add limit</string>
     </property>
    </widget>
   </widget>
@@ -111,8 +147,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>455</width>
-     <height>21</height>
+     <width>1204</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>
@@ -127,8 +163,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>429</x>
-     <y>100</y>
+     <x>189</x>
+     <y>380</y>
     </hint>
     <hint type="destinationlabel">
      <x>424</x>

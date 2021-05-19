@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "Simplex.cpp"
 #include <QDebug>
+#include <stdio.h>
+#include <stdlib.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -10,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->startTest->setText("Test");
     ui->pushButton->setText("Close");
+    ui->get_variables->setText("Insert Variables");
 
 }
 
@@ -19,188 +22,304 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::set(){ //po ustwieniu spinBox_2?
-    int goods = ui->spinBox->value();
-    int material = ui->spinBox_2->value();
-    ui->tableWidget->setRowCount(material); //tabela 1 do wczytania nakładów jednostkowych
-    ui->tableWidget->setColumnCount(goods);
+   // int goods = ui->spinBox->value();
+   // int material = ui->spinBox_2->value();
+    //ui->tableWidget->setRowCount(material); //tabela 1 do wczytania nakładów jednostkowych
+    //ui->tableWidget->setColumnCount(goods);
 }
+
+
 
 void MainWindow::on_startTest_clicked()
 {
-    //Narazie bardzo dummy rozwiazanie ale dziala rozwiazanie z zajęć i póki co bez wczytywania z UI
-    int goods = ui->spinBox->value(); // Zad 1 i 2
-    //int goods = 4; // Zad 2.
-    int material = ui->spinBox_2->value();
-    int* limit_goods = new int[goods];
-    int* limit_goods_unit = new int[goods];
-    float **main_table = new float *[goods];
-    for (int i =0; i< goods; ++i) {
-        main_table[i] = new float [material];
-    }
 
-    /*How to give inputs to the program =>>>
+     // int material = ui->spinBox_2->value();
+      int meaningVariables = ui->spinBox_3->value();
+      int colSizeA = meaningVariables;
+      int rowSizeA =ui->table_limits->rowCount();
+      int howManyEquality = 0;
+      int indexToPutSlackVar = 0;
 
-       Example:
-        colSizeA = 6 // input colmn size
-        rowSizeA = 3  // input row size
-
-        float C[N]={-6,-5,-4,0,0,0};  //Initialize the C array  with the coefficients of the constraints of the objective function
-        float B[M]={240,360,300};//Initialize the B array constants of the constraints respectively
+      vector<float> _a;
+      vector<float> _c;
+      vector<float> _b;
 
 
-       //initialize the A array by giving all the coefficients of all the variables
-       float A[M][N] =  {
-                     { 2,  1,  1,   1,  0, 0},
-                    { 1,  3,  2,   0,  1, 0 },
-                    {   2,    1,  2,   0,  0,  1}
-                    };
+      // ui->table_limits->item(1,1);
+      cout << "Function: ";
+      for(int i = 0; i < ui->table_max_function->columnCount(); i++) {
+           QString number_string =  ui->table_max_function->item(0,i)->text();
+           float number = number_string.toFloat();
+          // cout << number<< " ";
+           _c.push_back( (-1) *number);
+      }
 
-    */
+      for(int i = 0; i < ui->table_limits->rowCount(); i++) {
 
-    //zad1
-    int colSizeA = material+5; //materialy +liczba warunkow? ale zalezy czy <= czy = czy >=
-    int rowSizeA = 5; //liczba warunkow
-    float C[]= {-1800,-2400,-3000,0,0,0,0,0};  //should initialis the c arry here
-    float B[]={36000,48000,200,120,60};  // should initialis the b array here
+          for(int j = 0; j < ui->table_limits->columnCount(); j++) {
 
+           QString item_string = ui->table_limits->item(i,j)->text();
 
+              if( item_string == "<=") {
+                colSizeA++;
+              }
+              else if( item_string == "=") {
+                colSizeA++;
+                howManyEquality++;
+              }
+          }
 
-    float a[5][8] = {    //should intialis the A[][] array here
-                   { 5,  3,  1, 1, 0, 0,0,0},
-                   { 1,  2,  4, 0, 1, 0,0,0},
-                   { 1,  0,  0, 0, 0, 1,0,0},
-                   { 0,  1,  0, 0, 0, 0,1,0},
-                   { 0,  0,  1, 0, 0, 0,0,1}
-             };
+      }
 
-
-        std::vector <std::vector<float> > vec2D(rowSizeA, std::vector<float>(colSizeA, 0));
-
-        std::vector<float> b(rowSizeA,0);
-        std::vector<float> c(colSizeA,0);
-
+      for(int i = 0;i < howManyEquality; i++) {
+          _c.push_back(100000);
+      }
 
 
+      //equality first -> idk why, due to algorithm
+      for(int i = 0; i < ui->table_limits->rowCount(); i++) {
 
-       for(int i=0;i<rowSizeA;i++){         //make a vector from given array
-            for(int j=0; j<colSizeA;j++){
-                vec2D[i][j] = a[i][j];
-            }
-       }
+          vector<float> temp;
+          for(int j = 0; j < ui->table_limits->columnCount(); j++) {
 
+               if(howManyEquality > 0) {
 
+               QString item_string = ui->table_limits->item(i,j)->text();
 
+                  float number = item_string.toFloat();
+                  if( item_string == "=") {
+                    howManyEquality--;
 
-
-       for(int i=0;i<rowSizeA;i++){
-            b[i] = B[i];
-       }
-
-        for(int i=0;i<colSizeA;i++){
-            c[i] = C[i];
-       }
-
-
-      // hear the make the class parameters with A[m][n] vector b[] vector and c[] vector
-      Simplex simplex(vec2D,b,c);
-      simplex.CalculateSimplex();
-
-
-
-    //Zad1
-    /*main_table[0][0] = 16;//ui->tableWidget->item(0,0)->text().toFloat();
-    main_table[0][1] = 24;//ui->tableWidget->item(0,1)->text().toFloat();
-    main_table[1][0] = 16;//ui->tableWidget->item(1,0)->text().toFloat();
-    main_table[1][1] = 10;//ui->tableWidget->item(1,1)->text().toFloat();
-    limit_goods_unit[0] = 3000;
-    limit_goods_unit[1] = 4000;
-    limit_goods[0] = 96000;
-    limit_goods[1] = 80000;
-
-    //Zad2
-    main_table[0][0] = 6;
-    main_table[0][1] = 6;
-    main_table[1][0] = 10;
-    main_table[1][1] = 5;
-    limit_goods_unit[0] = 1000000; // nie ma ograniczenia ale jak da sie zero to petla nie rusza .. może trzeba dać coś większego
-    limit_goods_unit[1] = 4000;
-    limit_goods[0] = 36000;
-    limit_goods[1] = 50000;
-
-    //Zad3
-//    main_table[0][0] = 1;
-//    main_table[0][1] = 2;
-//    main_table[0][2] = 1.5;
-//    main_table[0][3] = 6;
-
-//    main_table[1][0] = 2;
-//    main_table[1][1] = 2;
-//    main_table[1][2] = 1.5;
-//    main_table[1][3] = 4;
-
-//    limit_goods_unit[0] = 1000; // nie ma ograniczenia ale jak da sie zero to petla nie rusza .. może trzeba dać coś większego
-//    limit_goods_unit[1] = 1000;
-//    limit_goods_unit[2] = 1000; // nie ma ograniczenia ale jak da sie zero to petla nie rusza .. może trzeba dać coś większego
-//    limit_goods_unit[3] = 1000;
-
-//    limit_goods[0] = 90000;
-//    limit_goods[1] = 120000;
-
-
-
-    float current_result=0;
-    float result =0;
-
-    int x1, x2;
-    //x3, x4;
-
-    for(x1 = 1;x1 <= limit_goods_unit[0]; x1 ++) {
-
-        for(x2 = 1; x2 <= limit_goods_unit[1]; x2++ ) {
-
-
-
-                    //tu można dać checkboxa czy chcemy proporcje czy nie
-                    //Zad1
-        //            if(!(x1/x2 == 3/2)) {
-                    // tu trzeba uważać na dzielenie przez 0
-        //                continue;
-        //            }
-
-                    //Zad1 Zad2
-                    if(!(main_table[0][0]*x1 + main_table[0][1]*x2 <= limit_goods[0])){
-                        continue;
+                    for(auto c : temp) {
+                        _a.push_back(c);
                     }
 
-                    if(!(main_table[1][0]*x1 + main_table[1][1]*x2 <= limit_goods[1])){
-                        continue;
+                    bool oneTimeAccess = true;
+                    for(int i = 0; i < colSizeA - meaningVariables; i++) {
+
+
+                        if(oneTimeAccess && indexToPutSlackVar == i) {
+                            _a.push_back(1);
+                            indexToPutSlackVar++;
+                            oneTimeAccess = false;
+                        }
+                        else {
+                            _a.push_back(0);
+                        }
+
                     }
 
+                    QString item_string = ui->table_limits->item(i,j+1)->text();
+                     float limit = item_string.toFloat();
+                    _b.push_back(limit);
+                    break;
+
+                  }
+                  temp.push_back(number);
+              }
+          }
+
+      }
+
+      //rest later
+      for(int i = 0; i < ui->table_limits->rowCount(); i++) {
+          vector<float> temp;
+          for(int j = 0; j < ui->table_limits->columnCount(); j++) {
 
 
-                   //current_result = 30*x1 + 40*x2; //Zad1
-                    current_result = x1 + x2; //Zad2
-                   // current_result = 4*x1 + 6*x2 + 3*x3 + 12*x4; //Zad3
-                    if(current_result > result) {
-                        result = current_result;
+                 QString item_string = ui->table_limits->item(i,j)->text();
+
+                  float number = item_string.toFloat();
+                  if( item_string == "<=" || item_string == ">=" ) {
+
+                     for(auto c : temp) {
+                         _a.push_back(c);
+                     }
+
+                    bool oneTimeAccess = true;
+                    for(int i = 0; i < colSizeA - meaningVariables; i++) {
+
+                        if(oneTimeAccess && indexToPutSlackVar == i) {
+                            _a.push_back(1);
+                            indexToPutSlackVar++;
+                            oneTimeAccess = false;
+                        }
+                        else {
+                            _a.push_back(0);
+                        }
+
                     }
 
+                    QString item_string = ui->table_limits->item(i,j+1)->text();
+                     float limit = item_string.toFloat();
+                    _b.push_back(limit);
+                    break;
 
+                  }
+                  temp.push_back(number);
+
+          }
+
+      }
+
+      while((int)_c.size() != colSizeA) {
+          _c.push_back(0);
+      }
+//      for(int i =0; i < (int)(colSizeA - _c.size()); i++) {
+//            _c.push_back(0);
+//      }
+
+
+       float *C = new float[colSizeA];
+       float *B = new float[rowSizeA];
+       float **a = new float*[rowSizeA];
+       for ( int i = 0; i < rowSizeA; ++i )
+        {
+             a[i] = new float [colSizeA]; //alokacja pamieci
         }
-    }
 
-*/
+      cout<< endl << endl << "A" << _a.size() << endl;
 
-    //float res = 170000;
-    /*QString disp_res = QString::number(result);
-    ui->result->setText(disp_res);
-    qInfo() <<  x1;
-    qInfo() <<  x2;
+      for(auto i : _a) {
+          cout << i << " ,";
+      }
 
 
-    delete[] limit_goods;
-    delete [] limit_goods_unit;
-    for ( int i(0); i < goods; ++i )  delete [] main_table[i];
-    delete [] main_table;*/
+      int k = 0;
+      for(int i = 0; i < rowSizeA; i++) {
+          for(int j = 0; j < colSizeA; j++) {
+              a[i][j] = _a[k];
+              k++;
+          }
+      }
+
+      cout<< endl << endl << "B" << endl;
+
+      int it = 0;
+      for(auto i : _b) {
+          cout << i << " ,";
+          B[it] = i;
+          it++;
+      }
+      cout<< endl << endl << "C" << endl;
+      it = 0;
+      for(auto i : _c) {
+          cout << i << " ,";
+          C[it] = i;
+          it++;
+      }
+
+      cout << endl << endl;
+      for(int i = 0; i < rowSizeA; i++) {
+          for(int j = 0; j < colSizeA; j++) {
+              cout << a[i][j]  << " ";
+          }
+          cout << endl;
+      }
+      cout << endl << endl;
+
+     // int colSizeA= 8;  //should initialise columns size in A
+     // int rowSizeA = 5;  //should initialise columns row in A[][] vector
+
+     // float C[]= {-6,-5,-4,0,0,0};  //should initialis the c arry here
+
+     // float C[]= {-1800,-2400,-3000,10000,100000,0,0,0};
+     // float B[]={3600,4800,200,120,60};  // should initialis the b array here
+
+     // float B[]={120,60,200,3600,4800};
+
+
+
+
+
+
+
+//      float a[5][8] = {    //should intialis the A[][] array here
+//                     { 0,  1, 0, 1, 0, 0, 0, 0},
+//                     { 0,  0, 1, 0, 1, 0, 0, 0},
+//                     { 1,  0, 0, 0, 0, 1, 0, 0},
+//                     { 5,  3, 1, 0, 0, 0, 1, 0},
+//                     { 1,  2, 4, 0, 0, 0, 0, 1}
+
+//               };
+
+
+          std::vector <std::vector<float> > vec2D(rowSizeA, std::vector<float>(colSizeA, 0));
+
+          std::vector<float> b(rowSizeA,0);
+          std::vector<float> c(colSizeA,0);
+
+
+
+
+         for(int i=0;i<rowSizeA;i++){         //make a vector from given array
+              for(int j=0; j<colSizeA;j++){
+                  vec2D[i][j] = a[i][j];
+              }
+         }
+
+
+
+
+
+         for(int i=0;i<rowSizeA;i++){
+              b[i] = B[i];
+         }
+
+          for(int i=0;i<colSizeA;i++){
+              c[i] = C[i];
+         }
+
+
+        // hear the make the class parameters with A[m][n] vector b[] vector and c[] vector
+        Simplex simplex(vec2D,b,c);
+        simplex.CalculateSimplex();
+
+
+}
+
+
+void MainWindow::on_get_variables_clicked()
+{
+     int meaningVariables = ui->spinBox_3->value();
+     ui->table_max_function->setColumnCount(meaningVariables);
+     ui->table_max_function->setRowCount(1);
+     QStringList labelColumnList;
+     QStringList labelRowList;
+
+     for (int i = 0; i < meaningVariables; i++) {
+         QString x = "x";
+         int second_char_x = i+1;
+         QString s = QString::number(second_char_x);
+         x = x + s;
+        labelColumnList.append(x);
+     }
+
+     ui->table_max_function->setHorizontalHeaderLabels(labelColumnList);
+
+     QString coef = "coef.";
+     labelRowList.append(coef);
+     ui->table_max_function->setVerticalHeaderLabels(labelRowList);
+}
+
+
+void MainWindow::on_add_limit_clicked()
+{
+     int meaningVariables = ui->spinBox_3->value();
+     ui->table_limits->setColumnCount(meaningVariables+2);
+
+     QStringList labelColumnList;
+     for (int i = 0; i < meaningVariables; i++) {
+         QString x = "x";
+         int second_char_x = i+1;
+         QString s = QString::number(second_char_x);
+         x = x + s;
+        labelColumnList.append(x);
+     }
+     labelColumnList.append("symbol");
+     labelColumnList.append("limit");
+     ui->table_limits->setHorizontalHeaderLabels(labelColumnList);
+    // ui->table_limits->insertRow(1);
+     ui->table_limits->setRowCount(ui->table_limits->rowCount() + 1);
 }
 
