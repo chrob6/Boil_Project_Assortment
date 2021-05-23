@@ -10,9 +10,12 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->startTest->setText("Test");
+    ui->startTest->setText("Calculate");
     ui->pushButton->setText("Close");
     ui->get_variables->setText("Insert Variables");
+    ui->result_text->setText("Optimal Result");
+    ui->result_calculation->setText(" ");
+    ui->result_variables->setText(" ");
 
 }
 
@@ -60,7 +63,7 @@ void MainWindow::on_startTest_clicked()
 
            QString item_string = ui->table_limits->item(i,j)->text();
 
-              if( item_string == "<=") {
+              if( item_string == "<=" || item_string == ">=" ) {
                 colSizeA++;
               }
               else if( item_string == "=") {
@@ -122,6 +125,7 @@ void MainWindow::on_startTest_clicked()
       }
 
       //rest later
+      bool multiply_minus = false;
       for(int i = 0; i < ui->table_limits->rowCount(); i++) {
           vector<float> temp;
           for(int j = 0; j < ui->table_limits->columnCount(); j++) {
@@ -131,8 +135,14 @@ void MainWindow::on_startTest_clicked()
 
                   float number = item_string.toFloat();
                   if( item_string == "<=" || item_string == ">=" ) {
+                     if( item_string == ">=") {
+                         multiply_minus = true;
+                     }
 
                      for(auto c : temp) {
+                         if(multiply_minus) {
+                             c = c * -1;
+                         }
                          _a.push_back(c);
                      }
 
@@ -152,6 +162,10 @@ void MainWindow::on_startTest_clicked()
 
                     QString item_string = ui->table_limits->item(i,j+1)->text();
                      float limit = item_string.toFloat();
+                     if(multiply_minus) {
+                         limit = limit * -1;
+                         multiply_minus = false;
+                     }
                     _b.push_back(limit);
                     break;
 
@@ -273,7 +287,13 @@ void MainWindow::on_startTest_clicked()
 
         // hear the make the class parameters with A[m][n] vector b[] vector and c[] vector
         Simplex simplex(vec2D,b,c);
-        simplex.CalculateSimplex();
+        vector<string> display = simplex.CalculateSimplex(meaningVariables);
+
+        QString qDisplayVar = QString::fromStdString(display[0]);
+        QString qDisplayMax = QString::fromStdString(display[1]);
+
+         ui->result_calculation->setText(qDisplayMax);
+         ui->result_variables->setText(qDisplayVar);
 
 
 }

@@ -245,7 +245,10 @@ class Simplex{
 
         }
 
-        void CalculateSimplex(){
+        vector<string> CalculateSimplex(int meaningVariables){
+            vector<string> toReturn; //[2] = {"0", "0"};
+            string variables = "";
+            string str_maximum;
             bool end = false;
 
             cout<<"initial array(Not optimal)"<<endl;
@@ -285,6 +288,10 @@ class Simplex{
                 if(count0 == rows -1 ){
 
                     cout<<"variable"<<index+1<<": "<<B[index]<<endl;  //every basic column has the values, get it form B array
+                    if(meaningVariables != 0) {
+                        variables.append("x" + to_string(index+1) + ":  " + to_string(B[index]) + "\n");
+                        meaningVariables --;
+                    }
                 }
                 else{
                     cout<<"variable"<<index+1<<": "<<0<<endl;
@@ -293,13 +300,14 @@ class Simplex{
 
             }
 
-
+          toReturn.push_back(variables);
            cout<<""<<endl;
            cout<<"maximum value: "<<maximum<<endl;  //print the maximum values
 
 
+           toReturn.push_back(to_string(maximum));
 
-
+            return toReturn;
         }
 
 };
