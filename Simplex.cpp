@@ -250,6 +250,7 @@ class Simplex{
             string variables = "";
             string str_maximum;
             bool end = false;
+            int start_meaningVariables = meaningVariables;
 
             cout<<"initial array(Not optimal)"<<endl;
             print();
@@ -289,12 +290,16 @@ class Simplex{
 
                     cout<<"variable"<<index+1<<": "<<B[index]<<endl;  //every basic column has the values, get it form B array
                     if(meaningVariables != 0) {
-                        variables.append("x" + to_string(index+1) + ":  " + to_string(B[index]) + "\n");
+                        variables.append("x" + to_string(((start_meaningVariables - meaningVariables) + 1))  + ":  " + to_string(B[index]) + "\n");
                         meaningVariables --;
                     }
                 }
                 else{
                     cout<<"variable"<<index+1<<": "<<0<<endl;
+                    if(meaningVariables != 0) {
+                        variables.append("x" + to_string(((start_meaningVariables - meaningVariables) + 1)) + ":  0" + "\n");
+                        meaningVariables --;
+                    }
 
                 }
 

@@ -296,6 +296,8 @@ void MainWindow::on_startTest_clicked()
          ui->result_variables->setText(qDisplayVar);
 
 
+
+
 }
 
 
@@ -341,5 +343,12 @@ void MainWindow::on_add_limit_clicked()
      ui->table_limits->setHorizontalHeaderLabels(labelColumnList);
     // ui->table_limits->insertRow(1);
      ui->table_limits->setRowCount(ui->table_limits->rowCount() + 1);
+}
+
+
+void MainWindow::on_reset_limits_clicked()
+{
+    ui->table_limits->setRowCount(0);
+    ui->table_limits->setColumnCount(0);
 }
 

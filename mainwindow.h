@@ -23,6 +23,8 @@ private slots:
 
     void on_add_limit_clicked();
 
+    void on_reset_limits_clicked();
+
 private:
     Ui::MainWindow *ui;
 
